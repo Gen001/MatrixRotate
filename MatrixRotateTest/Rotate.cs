@@ -1,24 +1,32 @@
 using System;
-using Xunit;
 using MatrixRotate.Services;
+using Xunit;
 
-namespace MatrixRotate
+namespace MatrixRotateTest
 {
-    public class MatrixRotateTest
+    public class Rotate
     {
-        private readonly Matrix _matrix;
-        public MatrixRotateTest()
+
+        public Rotate()
         {
-            _matrix = new Matrix();
         }
 
         [Fact]
-        public void RotateInvalidDimensionTest()
+        public void Matrix_NotInicialized_Test()
         {
-            int[,] data = new int[3, 4];
-            _matrix.Rotate(data);
-            data = new int[5, 4];
-            _matrix.Rotate(data);
+            IMatrix matrix = new Matrix();
+            Exception ex = Assert.Throws<InvalidOperationException>(() => matrix.Rotate());
+        }
+
+        [Fact]
+        public void Matrix_Rotate_Test()
+        {
+            IMatrix matrix = new Matrix();
+            int[,] data = new int[3,3]{{25, 38, 12}, {1, 7, 76}, {21, 64, 54}};
+            int[,] expectedData = new int[3,3]{{21, 1, 25}, {64, 7, 38}, {54, 76, 12}};
+            matrix.Init(data);
+            matrix.Rotate();
+            Assert.Equal(expectedData, matrix.Data);
         }
     }
 }

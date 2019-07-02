@@ -1,0 +1,33 @@
+th.mat-header-cell {
+    padding: 16px 0 16px 0;
+    /* row border */
+    border-right: 1px solid rgba(0,0,0,.12);
+
+}
+th.mat-header-cell:last-child {
+    padding: 16px 0 16px 0;
+    /* row border */
+    border-right: 0px;
+
+}
+td.mat-cell  {
+    /* row padding */
+    padding: 16px 0 16px 0;
+    /* row border */
+    border-right: 1px solid rgba(0,0,0,.12);
+}
+   
+   td.mat-cell:first-child {
+     /* row border */
+     border-left: 0px;
+   }
+   
+   td.mat-cell:last-child {
+     /* row border */
+     border-right: 0px ;
+   }
+   
+   table {
+     /* row spacing / margin */
+     border-spacing: 0 8px !important;
+   } 
