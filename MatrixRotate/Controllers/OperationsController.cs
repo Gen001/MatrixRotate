@@ -24,9 +24,9 @@ namespace MatrixRotate.Controllers
             try
             {
                 _matrix.Rotate();
-                return Ok(_matrix.Data);
+                return Ok();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return StatusCode(500);
             }

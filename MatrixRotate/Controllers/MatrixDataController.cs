@@ -21,32 +21,48 @@ namespace MatrixRotate.Controllers
             _reader = reader;
         }
 
-        // GET api/matrixdata
+        /// <summary>
+        /// GET api/matrixdata/begin/count
+        /// </summary>
+        /// <param name="startRow">Start row of the matrix</param>
+        /// <param name="count">count of the rows from the matrix</param>
+        /// <returns>int[,]</returns>
         [HttpGet("{startRow}/{count?}")]
         public ActionResult<int[,]> Gets(int startRow, int count = 1)
         {
-            if(_matrix.Data == null)
+            if (_matrix.Data == null)
             {
                 return BadRequest("Matrix not inicialized!");
             }
             int size = _matrix.Data.GetLength(0);
+            if (count > size)
+            {
+                count = size;
+            }
             int[,] res = new int[count, size];
             Buffer.BlockCopy(_matrix.Data, startRow * size * sizeof(int), res, 0, size * count * sizeof(int));
             return Ok(res);
         }
+         // GET api/matrixdata/size
+        [HttpGet("size")]
+        public ActionResult<int> GetSize()
+        {
+           return Ok(_matrix.Data.GetLength(0));
+        }
+
         // GET api/matrixdata
         [HttpGet("export")]
-        public IActionResult Export()
+        public FileStreamResult Export()
         {
             Stream stream = _reader.Export(_matrix.Data);
-            return File(stream, "application/octet-stream", "Matrix.csv");;
+            return File(stream, System.Net.Mime.MediaTypeNames.Application.Octet, "Matrix.csv");
         }
 
         // GET api/matrixdata/generate
         [HttpPost("generate")]
         public ActionResult Generate([FromBody]int size)
         {
-            if(size < 1)
+            if (size < 1)
             {
                 return BadRequest("Size must be greater than 0");
             }
@@ -54,29 +70,21 @@ namespace MatrixRotate.Controllers
             return Ok();
         }
 
-        // POST api/matrixdata
+        /// <summary>
+        /// POST api/matrixdata
+        /// Imports a matrix from the CSV file
+        /// </summary>
+        /// <returns>Size of the matrix</returns>
         [HttpPost, DisableRequestSizeLimit]
         public ActionResult Import()
         {
             try
             {
                 var file = Request.Form.Files[0];
-                string folderName = "Upload";
-                //string newPath = Path.Combine(rootPath, folderName);
-                if (!Directory.Exists(folderName))
-                {
-                    Directory.CreateDirectory(folderName);
-                }
                 if (file.Length > 0)
                 {
-                    string fileName = Guid.NewGuid().ToString();
-                    string fullPath = Path.Combine(folderName, fileName);
-                    using (var stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        //file.CopyTo(stream);
-                        _matrix.Init(_reader.Import(stream));
-                    }
-                    return Ok();
+                    _matrix.Init(_reader.Import(file.OpenReadStream()));
+                    return Ok(_matrix.Data.GetLength(0));
                 }
                 return BadRequest("File length is zero");
             }

@@ -1,3 +1,4 @@
+using Autofac;
 using MatrixRotate.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,16 +23,21 @@ namespace MatrixRotate
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton<IMatrix, Matrix>();
-            services.AddScoped<IMatrixIO, MatrixCsv>();
+            // services.AddSingleton<IMatrix, Matrix>();
+            // services.AddScoped<IMatrixIO, MatrixCsv>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            
         }
-
+        public IContainer ApplicationContainer { get; private set; }
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new AutofacModule());
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {

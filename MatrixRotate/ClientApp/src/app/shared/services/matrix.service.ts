@@ -32,6 +32,14 @@ export class MatrixService {
       );
   }
 
+  public getSize(): Observable<number> {
+    const url = `${environment.apiUrl}matrixdata/size`;
+    return this.http.get<number>(url)
+      .pipe(
+        catchError((error: any) => throwError(error))
+      );
+  }
+
   public rotate(): Observable<any> {
     const url = `${environment.apiUrl}operations/rotate`;
     return this.http.post(url, '')
@@ -40,4 +48,19 @@ export class MatrixService {
       );
   }
 
+  public export(): Observable<ArrayBuffer> {
+    const url = `${environment.apiUrl}matrixdata/export`;
+    return this.http.get(url, { responseType: 'arraybuffer' })
+      .pipe(
+        catchError((error: any) => throwError(error))
+      );
+  }
+
+  public import(file: FormData): Observable<number> {
+    const url = `${environment.apiUrl}matrixdata`;
+    return this.http.post<number>(url, file)
+      .pipe(
+        catchError((error: any) => throwError(error))
+      );
+  }
 }
