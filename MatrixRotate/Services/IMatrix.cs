@@ -9,7 +9,7 @@ namespace MatrixRotate.Services
         /// <summary>
         /// Generates matrix of specified size with random values
         /// </summary>
-        void Generate (int size);
+        void Generate (uint size);
         void Rotate ();
     }
 }

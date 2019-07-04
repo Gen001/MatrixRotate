@@ -11,7 +11,7 @@ namespace MatrixRotate.Services
 
         public int[,] Data => data;
 
-        public void Generate(int size)
+        public void Generate(uint size)
         {
             data = new int[size, size];
             Random rndValue = new Random(Guid.NewGuid().GetHashCode());

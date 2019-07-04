@@ -13,7 +13,12 @@ namespace MatrixRotate.Services
 
         public Stream Export(int[,] data)
         {
-            if(data.GetLength(1) != data.GetLength(0))
+            if (data is null)
+            {
+                throw new ArgumentNullException(nameof(data));
+            }
+
+            if (data.GetLength(1) != data.GetLength(0))
             {
                 throw new ArgumentException("Dimensions of matrix is not equal");
             }
@@ -38,6 +43,11 @@ namespace MatrixRotate.Services
 
         public int[,] Import(Stream stream)
         {
+            if (stream is null)
+            {
+                throw new ArgumentNullException(nameof(stream));
+            }
+
             int n = 0;
             int[,] matrixData = null;
             var reader = new StreamReader(stream, Encoding.UTF8);

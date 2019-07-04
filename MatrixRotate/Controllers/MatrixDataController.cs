@@ -60,7 +60,7 @@ namespace MatrixRotate.Controllers
 
         // GET api/matrixdata/generate
         [HttpPost("generate")]
-        public ActionResult Generate([FromBody]int size)
+        public ActionResult Generate([FromBody]uint size)
         {
             if (size < 1)
             {
