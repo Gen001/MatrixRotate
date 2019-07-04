@@ -47,7 +47,7 @@ namespace MatrixRotate.Controllers
         [HttpGet("size")]
         public ActionResult<int> GetSize()
         {
-           return Ok(_matrix.Data.GetLength(0));
+           return Ok(_matrix.Data?.GetLength(0) ?? 0);
         }
 
         // GET api/matrixdata
